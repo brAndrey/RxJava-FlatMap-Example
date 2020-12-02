@@ -1,11 +1,20 @@
 package com.example.rxjava_flatmap_example.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Post {
+
+//http://developer.alexanderklimov.ru/android/theory/parcelable.php
+
+// implements Parcelable - нужен для передачи экземпляра класса через
+// intent.putExtra(Constants.POST,post);
+
+public class Post implements Parcelable {
     @SerializedName("userId")
     @Expose()
     private int userId;
@@ -31,6 +40,29 @@ public class Post {
         this.body = body;
         this.comments = comments;
     }
+
+    protected Post(Parcel in) {
+        // implements Parcelable
+        userId = in.readInt();
+        id = in.readInt();
+        title = in.readString();
+        body = in.readString();
+    }
+
+    public static final Creator<Post> CREATOR = new Creator<Post>() {
+
+        // implements Parcelable
+
+        @Override
+        public Post createFromParcel(Parcel in) {
+            return new Post(in);
+        }
+
+        @Override
+        public Post[] newArray(int size) {
+            return new Post[size];
+        }
+    };
 
     public int getUserId() {
         return userId;
@@ -81,5 +113,18 @@ public class Post {
                 ", body='" + body + '\'' +
                 '}';
     }
+    @Override
+    // implements Parcelable
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        // implements Parcelable
+        parcel.writeInt(userId);
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeString(body);
+    }
 }

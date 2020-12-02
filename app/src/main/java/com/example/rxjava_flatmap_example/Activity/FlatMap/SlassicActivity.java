@@ -1,4 +1,4 @@
-package com.example.rxjava_flatmap_example.Activity;
+package com.example.rxjava_flatmap_example.Activity.FlatMap;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +43,7 @@ public class SlassicActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        RecyclerAdapter adapter = new RecyclerAdapter();
+        RecyclerAdapterFlatMap adapter = new RecyclerAdapterFlatMap();
 
         recyclerView.setAdapter(adapter);
 

@@ -1,9 +1,9 @@
-package com.example.rxjava_flatmap_example.Activity;
+package com.example.rxjava_flatmap_example.Activity.switchMap;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,22 +15,27 @@ import com.example.rxjava_flatmap_example.models.Post;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
+public class RecyclerAdapterSwitchMap extends RecyclerView.Adapter<RecyclerAdapterSwitchMap.MyViewHolder> {
 
     private static final String TAG = "RecyclerAdapter";
 
     private List<Post> posts = new ArrayList<>();
+    public OnPostClickListener onPostClickListener;
+
+    public RecyclerAdapterSwitchMap(OnPostClickListener onPostClickListener) {
+        this.onPostClickListener = onPostClickListener;
+    }
+
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_post_list_item, null, false);
-        return new MyViewHolder(view);
+        return new MyViewHolder(view, onPostClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
         holder.bind(posts.get(position));
     }
 
@@ -54,39 +59,32 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
 
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+        OnPostClickListener onPostClickListener;
+        TextView title;
 
-        TextView title, numComments;
-        ProgressBar progressBar;
-
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, OnPostClickListener onPostClickListener) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
-            numComments = itemView.findViewById(R.id.num_comments);
-            progressBar = itemView.findViewById(R.id.progress_bar);
+            this.onPostClickListener = onPostClickListener;
+
+            itemView.setOnClickListener(this);
         }
 
-        public void bind(Post post){
+        public void bind(Post post) {
             title.setText(post.getTitle());
 
-            if(post.getComments() == null){
-                showProgressBar(true);
-                numComments.setText("");
-            }
-            else{
-                showProgressBar(false);
-                numComments.setText(String.valueOf(post.getComments().size()));
-            }
         }
 
-        private void showProgressBar(boolean showProgressBar){
-            if(showProgressBar) {
-                progressBar.setVisibility(View.VISIBLE);
-            }
-            else{
-                progressBar.setVisibility(View.GONE);
-            }
+        @Override
+        public void onClick(View view) {
+            Log.d(TAG,"onClick "+getAdapterPosition());
+            onPostClickListener.onPostClick(getAdapterPosition());
         }
+    }
+
+    public interface OnPostClickListener {
+        void onPostClick(int position);
     }
 }

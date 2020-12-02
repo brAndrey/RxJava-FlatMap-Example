@@ -1,4 +1,4 @@
-package com.example.rxjava_flatmap_example.Activity;
+package com.example.rxjava_flatmap_example.Activity.FlatMap;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,7 +25,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivityFlatMap extends AppCompatActivity {
 
 
     //https://codingwithmitch.com/courses/rxjava-rxandroid-for-beginners/transformation-operators-flatmap/
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     // vars
     private CompositeDisposable disposables = new CompositeDisposable();
-    private RecyclerAdapter adapter;
+    private RecyclerAdapterFlatMap adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
         getPostsObservable()
                 .subscribeOn(Schedulers.io())
 
-                .flatMap(new Function<Post, ObservableSource<Post>>() {
+                  .concatMap(new Function<Post, ObservableSource<Post>>() {
+               // .flatMap(new Function<Post, ObservableSource<Post>>() {
+
                     @Override
                     public ObservableSource<Post> apply(Post post) throws Exception {
                         return getCommentsObservable(post);
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView(){
-        adapter = new RecyclerAdapter();
+        adapter = new RecyclerAdapterFlatMap();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }

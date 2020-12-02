@@ -22,4 +22,10 @@ public interface RequestApi {
     Observable<List<Comment>> getComments(
             @Path("id") int id
     );
+
+
+    @GET("posts/{id}")
+    Observable<Post> getPost(
+            @Path("id") int id
+    );
 }

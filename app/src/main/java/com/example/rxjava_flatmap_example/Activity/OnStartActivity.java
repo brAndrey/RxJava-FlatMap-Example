@@ -7,6 +7,9 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.rxjava_flatmap_example.Activity.FlatMap.MainActivityFlatMap;
+import com.example.rxjava_flatmap_example.Activity.FlatMap.SlassicActivity;
+import com.example.rxjava_flatmap_example.Activity.switchMap.MainActivitySwitchMap;
 import com.example.rxjava_flatmap_example.R;
 
 public class OnStartActivity extends AppCompatActivity {
@@ -32,12 +35,22 @@ public class OnStartActivity extends AppCompatActivity {
 
     public void startObserverable(View view) {
         try {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, MainActivityFlatMap.class);
             startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+
+    }
+
+    public void startObserverableSwitchMap(View view) {
+        try {
+            Intent intent = new Intent(this, MainActivitySwitchMap.class);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }
